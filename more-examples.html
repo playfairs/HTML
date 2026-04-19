@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Files</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            min-height: 100vh;
+            color: #d0d0d0;
+        }
+
+        .header {
+            background: #0d0d0d;
+            color: #e0e0e0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #555;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            background: #333;
+            color: #e0e0e0;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #444;
+            border-color: #666;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .file-card {
+            background: #262626;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 1rem;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .file-card:hover {
+            border-color: #555;
+            transform: translateY(-2px);
+        }
+
+        .file-card h3 {
+            color: #e0e0e0;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .file-card .path {
+            color: #707070;
+            font-size: 0.8rem;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin-bottom: 0.75rem;
+        }
+
+        .file-card p {
+            color: #909090;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .file-actions .btn {
+            flex: 1;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .breadcrumb {
+            background: #0d0d0d;
+            padding: 0.75rem 2rem;
+            border-bottom: 1px solid #333;
+            color: #909090;
+            font-size: 0.85rem;
+        }
+
+        .breadcrumb a {
+            color: #b0b0b0;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #e0e0e0;
+        }
+
+        .folder-badge {
+            display: inline-block;
+            background: #4a4a4a;
+            color: #d0d0d0;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+            font-weight: 500;
+        }
+
+        .code-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .code-modal.active {
+            display: flex;
+        }
+
+        .code-modal-content {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .code-modal-header h3 {
+            color: #d0d0d0;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .code-modal-close {
+            background: none;
+            border: none;
+            color: #909090;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .code-modal-close:hover {
+            background: #333;
+            color: #e0e0e0;
+        }
+
+        .code-modal-body {
+            padding: 1rem;
+            overflow: auto;
+        }
+
+        .code-modal pre {
+            background: #0d0d0d;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 1rem;
+            color: #d0d0d0;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #707070;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>All Files + Examples</h1>
+            <p>Browse all files in the project</p>
+        </div>
+        <a href="index.html" class="btn">Back to Editor</a>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> / All Files
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2 class="section-title">Root Files</h2>
+            <div class="file-grid" id="rootFiles">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">HTML Examples <span class="folder-badge">src/examples/html/</span></h2>
+            <div class="file-grid" id="htmlExamples">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">CSS Demo Pages <span class="folder-badge">src/examples/css/</span></h2>
+            <div class="file-grid" id="cssExamples">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">JavaScript Demo Pages <span class="folder-badge">src/examples/js/</span></h2>
+            <div class="file-grid" id="jsExamples">
+            </div>
+        </div>
+    </div>
+
+    <div class="code-modal" id="codeModal">
+        <div class="code-modal-content">
+            <div class="code-modal-header">
+                <h3 id="modalTitle">View Code</h3>
+                <button class="code-modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="code-modal-body">
+                <pre id="modalCode"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rootFiles = [
+            {
+                name: 'index.html',
+                path: 'index.html',
+                description: 'Main HTML Learning Environment with live editor and preview; The page you opened this one from.',
+                type: 'html'
+            },
+            {
+                name: 'README.md',
+                path: 'README.md',
+                description: 'README File, nothing important here.',
+                type: 'text'
+            },
+            {
+                name: 'more-examples.html',
+                path: 'more-examples.html',
+                description: 'That\'s this page you\'re viewing right now.',
+                type: 'html'
+            }
+        ];
+
+        const htmlExamples = [
+            { name: 'basic.html', description: 'Simple HTML structure with heading and paragraph.' },
+            { name: 'text-formatting.html', description: 'Headings, bold, italic, underline, and highlighted text.' },
+            { name: 'lists.html', description: 'Unordered, ordered, and description lists with nesting.' },
+            { name: 'links-images.html', description: 'Hyperlinks, images, email links, and page anchors.' },
+            { name: 'tables.html', description: 'Data tables with headers, rows, and styling.' },
+            { name: 'forms.html', description: 'Input fields, checkboxes, textareas, and buttons.' },
+            { name: 'semantic.html', description: 'Modern semantic elements: header, nav, article, aside, footer.' }
+        ];
+
+        const cssExamples = [
+            { name: 'animations.html', description: 'CSS animations and transitions with keyframes.' },
+            { name: 'basic-styling.html', description: 'Basic CSS styling examples for typography and colors.' },
+            { name: 'flexbox.html', description: 'Flexbox layout examples and alignment.' },
+            { name: 'grid.html', description: 'CSS Grid layout examples.' }
+        ];
+
+        const jsExamples = [
+            { name: 'arrays.html', description: 'JavaScript array methods and manipulation.' },
+            { name: 'basic-dom.html', description: 'DOM manipulation and element selection.' },
+            { name: 'events.html', description: 'Event handling and listeners.' }
+        ];
+
+        const codeCache = {};
+
+        function renderFileCard(file, containerId, basePath = '') {
+            const container = document.getElementById(containerId);
+            const fullPath = basePath ? `${basePath}/${file.name}` : file.path;
+            
+            const card = document.createElement('div');
+            card.className = 'file-card';
+            card.innerHTML = `
+                <h3>${file.name}</h3>
+                <div class="path">${fullPath}</div>
+                <p>${file.description}</p>
+                <div class="file-actions">
+                    <button class="btn btn-primary" onclick="openFile('${fullPath}')">Open</button>
+                    <button class="btn btn-secondary" onclick="viewCode('${fullPath}', '${file.name}')">View Code</button>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+
+        function populateFiles() {
+            const rootContainer = document.getElementById('rootFiles');
+            if (rootFiles.length === 0) {
+                rootContainer.innerHTML = '<div class="empty-state">No files in root directory</div>';
+            } else {
+                rootFiles.forEach(file => renderFileCard(file, 'rootFiles'));
+            }
+
+            const htmlContainer = document.getElementById('htmlExamples');
+            htmlExamples.forEach(file => renderFileCard(file, 'htmlExamples', 'src/examples/html'));
+
+            const cssContainer = document.getElementById('cssExamples');
+            cssExamples.forEach(file => renderFileCard(file, 'cssExamples', 'src/examples/css'));
+
+            const jsContainer = document.getElementById('jsExamples');
+            jsExamples.forEach(file => renderFileCard(file, 'jsExamples', 'src/examples/js'));
+        }
+
+        function openFile(path) {
+            window.open(path, '_blank');
+        }
+
+        async function viewCode(path, name) {
+            const modal = document.getElementById('codeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalCode = document.getElementById('modalCode');
+            
+            modalTitle.textContent = `Viewing: ${name}`;
+            modal.classList.add('active');
+            modalCode.textContent = 'Loading...';
+            
+            try {
+                if (codeCache[path]) {
+                    modalCode.textContent = codeCache[path];
+                } else {
+                    const response = await fetch(path);
+                    if (response.ok) {
+                        const code = await response.text();
+                        codeCache[path] = code;
+                        modalCode.textContent = code;
+                    } else {
+                        modalCode.textContent = `Error: Could not load ${path}`;
+                    }
+                }
+            } catch (error) {
+                modalCode.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        document.getElementById('modalClose').addEventListener('click', () => {
+            document.getElementById('codeModal').classList.remove('active');
+        });
+
+        document.getElementById('codeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'codeModal') {
+                document.getElementById('codeModal').classList.remove('active');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('codeModal').classList.remove('active');
+            }
+        });
+
+        populateFiles();
+    </script>
+</body>
+</html>

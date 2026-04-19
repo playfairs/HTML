@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Animations</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background: #666;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        
+        .fade {
+            animation: fade 2s infinite;
+        }
+        
+        .slide {
+            animation: slide 3s infinite;
+        }
+        
+        .rotate {
+            animation: rotate 2s infinite linear;
+        }
+        
+        .scale {
+            animation: scale 2s infinite;
+        }
+        
+        .color-change {
+            animation: colorChange 3s infinite;
+        }
+        
+        @keyframes fade {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        @keyframes slide {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(100px); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+        
+        @keyframes colorChange {
+            0% { background: #666; }
+            33% { background: #999; }
+            66% { background: #333; }
+            100% { background: #666; }
+        }
+        
+        .hover-effect {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-effect:hover {
+            transform: scale(1.1);
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>CSS Animations</h2>
+    
+    <h3>Fade Animation</h3>
+    <div class="box fade"></div>
+    
+    <h3>Slide Animation</h3>
+    <div class="box slide"></div>
+    
+    <h3>Rotate Animation</h3>
+    <div class="box rotate"></div>
+    
+    <h3>Scale Animation</h3>
+    <div class="box scale"></div>
+    
+    <h3>Color Change Animation</h3>
+    <div class="box color-change"></div>
+    
+    <h3>Hover Effect</h3>
+    <div class="box hover-effect"></div>
+</body>
+</html>

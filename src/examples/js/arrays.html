@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Arrays</title>
+    <style>
+        .container {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #444;
+        }
+        .output {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .array-display {
+            background: #e8e8e8;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JavaScript Arrays</h1>
+        
+        <div class="array-display" id="arrayDisplay">
+            Current array: []
+        </div>
+        
+        <button onclick="createArray()">Create Array</button>
+        <button onclick="addElements()">Add Elements</button>
+        <button onclick="removeElements()">Remove Elements</button>
+        <button onclick="transformArray()">Transform Array</button>
+        <button onclick="filterArray()">Filter Array</button>
+        <button onclick="sortArray()">Sort Array</button>
+        <button onclick="findElements()">Find Elements</button>
+        <button onclick="clearArray()">Clear Array</button>
+        
+        <div class="output" id="output">
+            Operations will appear here...
+        </div>
+    </div>
+
+    <script>
+        let fruits = [];
+        const arrayDisplay = document.getElementById('arrayDisplay');
+        const output = document.getElementById('output');
+        
+        function updateDisplay() {
+            arrayDisplay.textContent = `Current array: [${fruits.join(', ')}]`;
+        }
+        
+        function addLog(message) {
+            output.textContent += message + '\n';
+        }
+        
+        function createArray() {
+            fruits = ['apple', 'banana', 'orange', 'grape', 'mango'];
+            addLog('Created array: ' + JSON.stringify(fruits));
+            addLog('Length: ' + fruits.length);
+            addLog('First element: ' + fruits[0]);
+            addLog('Last element: ' + fruits[fruits.length - 1]);
+            updateDisplay();
+        }
+        
+        function addElements() {
+            fruits.push('pineapple');
+            addLog('Pushed "pineapple": ' + JSON.stringify(fruits));
+            
+            fruits.unshift('strawberry');
+            addLog('Unshifted "strawberry": ' + JSON.stringify(fruits));
+            
+            fruits.splice(2, 0, 'kiwi');
+            addLog('Inserted "kiwi" at index 2: ' + JSON.stringify(fruits));
+            updateDisplay();
+        }
+        
+        function removeElements() {
+            const removed = fruits.pop();
+            addLog('Popped: ' + removed + ' -> ' + JSON.stringify(fruits));
+            
+            const shifted = fruits.shift();
+            addLog('Shifted: ' + shifted + ' -> ' + JSON.stringify(fruits));
+            
+            const spliced = fruits.splice(1, 2);
+            addLog('Spliced 2 elements from index 1: ' + JSON.stringify(spliced) + ' -> ' + JSON.stringify(fruits));
+            updateDisplay();
+        }
+        
+        function transformArray() {
+            const upperCase = fruits.map(fruit => fruit.toUpperCase());
+            addLog('Map to uppercase: ' + JSON.stringify(upperCase));
+            
+            const lengths = fruits.map(fruit => fruit.length);
+            addLog('Map to lengths: ' + JSON.stringify(lengths));
+            
+            const joined = fruits.join(' - ');
+            addLog('Joined with "-": ' + joined);
+        }
+        
+        function filterArray() {
+            const longFruits = fruits.filter(fruit => fruit.length > 5);
+            addLog('Filter fruits longer than 5 chars: ' + JSON.stringify(longFruits));
+            
+            const containsA = fruits.filter(fruit => fruit.includes('a'));
+            addLog('Filter fruits containing "a": ' + JSON.stringify(containsA));
+        }
+        
+        function sortArray() {
+            const sorted = [...fruits].sort();
+            addLog('Sorted alphabetically: ' + JSON.stringify(sorted));
+            
+            const reversed = [...fruits].reverse();
+            addLog('Reversed: ' + JSON.stringify(reversed));
+            
+            const sortByLength = [...fruits].sort((a, b) => a.length - b.length);
+            addLog('Sorted by length: ' + JSON.stringify(sortByLength));
+        }
+        
+        function findElements() {
+            if (fruits.length === 0) {
+                addLog('Array is empty. Create an array first.');
+                return;
+            }
+            
+            const found = fruits.find(fruit => fruit.includes('e'));
+            addLog('Find fruit containing "e": ' + found);
+            
+            const index = fruits.indexOf('apple');
+            addLog('Index of "apple": ' + index);
+            
+            const includes = fruits.includes('banana');
+            addLog('Includes "banana": ' + includes);
+            
+            const firstLong = fruits.find(fruit => fruit.length > 6);
+            addLog('First fruit longer than 6 chars: ' + firstLong);
+        }
+        
+        function clearArray() {
+            fruits = [];
+            addLog('Array cleared: ' + JSON.stringify(fruits));
+            updateDisplay();
+        }
+        
+        updateDisplay();
+        addLog('Ready. Click "Create Array" to start.');
+    </script>
+</body>
+</html>

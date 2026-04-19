@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Flexbox</title>
+    <style>
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .flex-item {
+            background: #666;
+            color: white;
+            padding: 20px;
+            margin: 5px;
+            border-radius: 4px;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .flex-column {
+            flex-direction: column;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .center-all {
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Flexbox Examples</h2>
+    
+    <h3>Horizontal Layout</h3>
+    <div class="flex-container">
+        <div class="flex-item">Item 1</div>
+        <div class="flex-item">Item 2</div>
+        <div class="flex-item">Item 3</div>
+    </div>
+    
+    <h3>Vertical Layout</h3>
+    <div class="flex-container flex-column">
+        <div class="flex-item">Item 1</div>
+        <div class="flex-item">Item 2</div>
+        <div class="flex-item">Item 3</div>
+    </div>
+    
+    <h3>Centered Content</h3>
+    <div class="flex-container center-all">
+        <div class="flex-item">Centered</div>
+    </div>
+</body>
+</html>
